@@ -17,10 +17,13 @@ WebSocket (:8766) → Speech Queue → XTTS v2 (inference_stream) → sounddevic
 ## Setup
 
 ```bash
+git clone https://github.com/jfietkau1/va-tts-service.git
+cd va-tts-service
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env
+# Add at least one voice reference file (see "Adding Voices" below)
 ```
 
 ## Adding Voices
