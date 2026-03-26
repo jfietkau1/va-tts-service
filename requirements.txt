@@ -1,4 +1,4 @@
-TTS>=0.22.0
+coqui-tts>=0.24.0
 websockets>=13.0
 pydantic-settings>=2.0.0
 python-dotenv>=1.0.0
