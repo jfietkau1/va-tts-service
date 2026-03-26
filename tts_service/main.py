@@ -5,6 +5,7 @@ import signal
 from .config import settings
 from .synthesizer import Synthesizer
 from .voice_manager import VoiceManager
+from .sound_manager import SoundManager
 from .audio_player import AudioPlayer
 from .speech_queue import SpeechQueue
 from .ws_server import WsServer
@@ -37,6 +38,9 @@ async def main() -> None:
     synthesizer.load()
     voice_manager.compute_conditioning(synthesizer.model)
 
+    sound_manager = SoundManager(sounds_dir=settings.sounds_dir)
+    sound_manager.scan()
+
     audio_player = AudioPlayer(device_index=settings.audio_device_index)
     audio_player.start()
 
@@ -58,6 +62,8 @@ async def main() -> None:
         port=settings.ws_port,
         speech_queue=speech_queue,
         voice_manager=voice_manager,
+        sound_manager=sound_manager,
+        audio_player=audio_player,
         default_voice=settings.default_voice,
         default_language=settings.default_language,
     )

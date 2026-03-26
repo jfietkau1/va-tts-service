@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     xtts_use_deepspeed: bool = True
 
     voices_dir: str = "./voices"
+    sounds_dir: str = "./sounds"
     default_voice: str = "default"
     default_language: str = "en"
 

@@ -5,6 +5,8 @@ import logging
 import websockets
 from websockets.asyncio.server import Server, ServerConnection
 
+from .audio_player import AudioPlayer
+from .sound_manager import SoundManager
 from .speech_queue import SpeakRequest, SpeechQueue
 from .voice_manager import VoiceManager
 
@@ -24,6 +26,8 @@ class WsServer:
         port: int,
         speech_queue: SpeechQueue,
         voice_manager: VoiceManager,
+        sound_manager: SoundManager,
+        audio_player: AudioPlayer,
         default_voice: str,
         default_language: str,
     ):
@@ -31,6 +35,8 @@ class WsServer:
         self._port = port
         self._speech_queue = speech_queue
         self._voice_manager = voice_manager
+        self._sound_manager = sound_manager
+        self._audio_player = audio_player
         self._default_voice = default_voice
         self._default_language = default_language
         self._clients: set[ServerConnection] = set()
@@ -118,6 +124,15 @@ class WsServer:
         elif cmd_type == "listVoices":
             voices = self._voice_manager.list_voices_info()
             await websocket.send(json.dumps({"type": "voices", "voices": voices}))
+
+        elif cmd_type == "playSound":
+            sound_id = command.get("sound", "")
+            audio = self._sound_manager.get(sound_id)
+            if audio is not None:
+                self._audio_player.enqueue(audio)
+                logger.debug("Playing sound: %s", sound_id)
+            else:
+                logger.warning("Sound not found: %s", sound_id)
 
         else:
             logger.warning("Unknown command type: %s", cmd_type)
