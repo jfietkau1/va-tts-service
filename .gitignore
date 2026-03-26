@@ -1,0 +1,26 @@
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+.eggs/
+
+.env
+.venv/
+venv/
+
+# Keep voice reference files but ignore large model checkpoints
+voices/*/model/
+
+models/
+*.bin
+*.pt
+*.onnx
+
+.idea/
+.vscode/
+*.swp
+*~
+.DS_Store
